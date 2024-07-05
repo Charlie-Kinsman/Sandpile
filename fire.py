@@ -3,8 +3,11 @@ import numpy as np
 import random as ran
 import math
 
-max = 200
-l = 30
+max = 1000
+l = 100
+rot = 20
+br = 3
+sig = 1
 
 
 class floor():
@@ -24,19 +27,17 @@ class floor():
         if (self.wood == 0):
             self.f = 0
         if (self.f == 0 and self.wood > 0):
-            print("here")
-            self.check+=1
+            self.check=4
             self.f=1
     def update(self):
-        if (self.f == 1 and self.check == 1):
-            self.check+=1
-            self.f=1
-        if (self.f == 1 and self.check == 2):
-            self.check = 0
+        if (self.f == 1 and self.check > 1):
+            self.check-=1
+        if (self.check == 1):
             self.f = 0
             self.wood = 0
+            self.check = 0
         if (self.f == 0 and self.sum > 0):
-            if (self.sum > abs(ran.gauss(0,2))):
+            if (self.sum > abs(ran.gauss(0,sig))):
                 self.fire()
             self.sum = 0
             
@@ -77,24 +78,19 @@ def check():
             j+=1
         i+=1
 
-for r in range(400):
+for r in range(max):
     print(r)
-    print(ran.gauss(0,5))
     t = np.zeros(shape=(l,l))
-    for z in range(3):
+    for z in range(rot):
         add()
-    for z in range(5):
+    for z in range(br):
         x[ran.randint(0,l-1),ran.randint(0,l-1)].fire()
-    q = 0
     check()
     for u in range(l):
         for v in range(l):
+            t[u,v] = x[u,v].wood
             x[u,v].update()
-            t[u,v] = x[u,v].f
-            if (x[u,v].f > 0):
-                q+=1
-    print("fire ",q)
-    if (r%1 == 0):
+    if (r%10 == 0):
         plt.imshow(t)
         plt.pause(0.01)
 plt.show()
