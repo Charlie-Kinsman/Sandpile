@@ -5,9 +5,10 @@ import math
 
 max = 1000
 l = 100
-rot = 20
-br = 3
+rot = 50
+br = 1
 sig = 1
+burn_time = 20
 
 
 class floor():
@@ -27,7 +28,7 @@ class floor():
         if (self.wood == 0):
             self.f = 0
         if (self.f == 0 and self.wood > 0):
-            self.check=4
+            self.check=burn_time
             self.f=1
     def update(self):
         if (self.f == 1 and self.check > 1):
@@ -88,9 +89,9 @@ for r in range(max):
     check()
     for u in range(l):
         for v in range(l):
-            t[u,v] = x[u,v].wood
+            t[u,v] = x[u,v].f
             x[u,v].update()
-    if (r%10 == 0):
+    if (r%3 == 0):
         plt.imshow(t)
         plt.pause(0.01)
 plt.show()
